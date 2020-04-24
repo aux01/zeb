@@ -1,11 +1,17 @@
-BINARIES = altpp
+# zeb makefile
+.POSIX:
 
-all: $(BINARIES)
+CFLAGS = -std=c99 -pipe $(CWARN) $(INCFLAGS)
+CWARN = -pedantic -Wall -Wextra -Wconversion -Wshadow -Wpointer-arith \
+        -Wstrict-prototypes -Wmissing-prototypes
 
-altpp: altpp.c
-	cc -Wall -Wextra -o $@ $<
+
+all: zeb
+
+zeb: zeb.c
+	cc $(CFLAGS) -o $@ $<
 
 clean:
-	rm -f $(BINARIES)
+	rm -f zeb
 
 .PHONY: all clean

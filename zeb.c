@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <strings.h>
 
@@ -5,15 +6,15 @@
 
 int main(void) {
         // width of each table row in character cells
-        int width = 80;
+        uint32_t width = 80;
 
         // alternating color sequences
-        char *colors[] = { "\e[102m", "\e[103m" };
-        int colorsz = strlen(colors[0]);
+        char *colors[] = { "\x1b[102m", "\x1b[103m" };
+        size_t colorsz = strlen(colors[0]);
 
         // reset
-        char *coloroff = "\e[0m";
-        int coloroffsz = strlen(coloroff);
+        char *coloroff = "\x1b[0m";
+        size_t coloroffsz = strlen(coloroff);
 
         // buffer of space characters
         char spaces[LINEMAX];
@@ -36,7 +37,7 @@ int main(void) {
 
                 // write actual line chars, followed by the color reset
                 // sequence, followed by the newline.
-                fwrite(line, linelen - 1, 1, stdout);
+                fwrite(line, (size_t)linelen - 1, 1, stdout);
                 fwrite(coloroff, coloroffsz, 1, stdout);
                 fwrite("\n", 1, 1, stdout);
         }
