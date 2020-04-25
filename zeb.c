@@ -105,8 +105,7 @@ int main(int argc, char *argv[]) {
                         width = (uint32_t)atoi(optarg);
                         break;
                 default:
-                        printf(usage, argv[0]);
-                        exit(1);
+                        exit(2);
                 }
         }
 
