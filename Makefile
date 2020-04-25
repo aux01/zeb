@@ -11,6 +11,9 @@ all: zeb
 zeb: zeb.c
 	cc $(CFLAGS) -o $@ $<
 
+README.html: README.md
+	markdown --unsafe <$< >$@
+
 clean:
 	rm -f zeb
 
