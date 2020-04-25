@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
         }
 
         // alternating color sequences
-        char *colors[] = { "\x1b[102m", "\x1b[103m" };
+        char *colors[] = { "\x1b[40m", "\x1b[0m" };
         size_t colorsz = strlen(colors[0]);
 
         // reset
