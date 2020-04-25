@@ -55,6 +55,11 @@ static void zeb_write_seq(const char *ptr, size_t size) {
 
         zeb_write("\x1b[", 2);
         zeb_write(ptr, size);
+
+        // save and restore sequence codes
+        if (ptr[0] == 's' || ptr[0] == 'u')
+                return;
+
         zeb_write("m", 1);
 }
 
@@ -124,12 +129,12 @@ int main(int argc, char *argv[]) {
                 if (lineno == 1)
                         zeb_write_seq(colors[ZEB_HEADER], colorlen[ZEB_HEADER]);
 
-                zeb_write(spaces, width);
-                zeb_write("\r", 1);
-                zeb_write(line, (size_t)linelen-1);
-
-                zeb_write_seq("0", 1);
-                zeb_write_seq("\n", 1);
+                zeb_write_seq("s", 1);                  // save cursor position
+                zeb_write(spaces, width);               // write width num of spaces
+                zeb_write_seq("u", 1);                  // restore cursor position
+                zeb_write(line, (size_t)linelen-1);     // write the line
+                zeb_write_seq("0", 1);                  // write color reset
+                zeb_write("\n", 1);                     // write the newline
         }
 
         // reset all colors
