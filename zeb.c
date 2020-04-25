@@ -10,13 +10,46 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <strings.h>
+#include <getopt.h>
 
 #define LINEMAX (1024 * 4)
 
-int main(void) {
+static char usage[] =
+        "Usage: %s [-w <width>]\n"
+        "Add alternating color to lines read from standard input and write to\n"
+        "standard output.\n"
+        "\n"
+        "Options:\n"
+        "    -w <width>         Number of horizontal columns to colorize.\n";
+
+int main(int argc, char *argv[]) {
+        static struct option longopts[] = {
+                { "width", required_argument, NULL, 'w' },
+                { "help",  no_argument,       NULL, 'h' },
+                { NULL,    0,                 NULL,  0  }
+        };
+
         // width of each table row in character cells
-        uint32_t width = 80;
+        uint32_t width = 78;
+
+        // parse arguments
+        int ch;
+        while ((ch = getopt_long(argc, argv, "hw:", longopts, NULL)) != -1) {
+                switch (ch) {
+                case 'h':
+                        printf(usage, argv[0]);
+                        exit(0);
+                        break;
+                case 'w':
+                        width = (uint32_t)atoi(optarg);
+                        break;
+                default:
+                        printf(usage, argv[0]);
+                        exit(1);
+                }
+        }
 
         // alternating color sequences
         char *colors[] = { "\x1b[102m", "\x1b[103m" };
