@@ -1,6 +1,8 @@
 # zeb makefile
 .POSIX:
 
+PREFIX = /usr/local
+
 CFLAGS = -std=c99 -pipe $(CWARN) $(INCFLAGS)
 CWARN = -pedantic -Wall -Wextra -Wconversion -Wshadow -Wpointer-arith \
         -Wstrict-prototypes -Wmissing-prototypes
@@ -17,4 +19,8 @@ README.html: README.md
 clean:
 	rm -f zeb
 
-.PHONY: all clean
+install: zeb
+	cp zeb $(PREFIX)/bin/zeb
+	chmod a+x $(PREFIX)/bin/zeb
+
+.PHONY: all clean install
