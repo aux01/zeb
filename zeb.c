@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
         // 1st color: alternate this on every other line starting at line 1
         // 2nd color: alternate this on every other line starting at line 2
         // 3rd color: alternate this on for line 1 only
-        char *colors[3] = { "40", "0", "" };
+        char *colors[3] = { "100", "0", "" };
         size_t colorlen[3] = { strlen(colors[0]), strlen(colors[1]), strlen(colors[2]) };
         int colorpos = 0;
 
