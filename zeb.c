@@ -24,6 +24,20 @@ static char usage[] =
         "Options:\n"
         "    -w <width>         Number of horizontal columns to colorize.\n";
 
+/*
+ * Write to output stream.
+ * Exit process non-zero when write fails.
+ */
+static size_t zeb_write(const char *ptr, size_t size) {
+        size_t w = fwrite(ptr, size, 1, stdout);
+        if (w) return w;
+
+        int eof = feof(stdout),
+            err = ferror(stdout);
+        fprintf(stderr, "error: write failed (err=%d, eof=%d)\n", err, eof);
+        exit(10);
+}
+
 int main(int argc, char *argv[]) {
         static struct option longopts[] = {
                 { "width", required_argument, NULL, 'w' },
@@ -74,15 +88,15 @@ int main(int argc, char *argv[]) {
         while ((linelen = getline(&line, &linecap, stdin)) > 0) {
                 // write color sequence followed by N space chars, followed
                 // by \r (move to beginning of line)...
-                fwrite(colors[lineno++ % 2], colorsz, 1, stdout);
-                fwrite(spaces, width, 1, stdout);
-                fwrite("\r", 1, 1, stdout);
+                zeb_write(colors[lineno++ % 2], colorsz);
+                zeb_write(spaces, width);
+                zeb_write("\r", 1);
 
                 // write actual line chars, followed by the color reset
                 // sequence, followed by the newline.
-                fwrite(line, (size_t)linelen - 1, 1, stdout);
-                fwrite(coloroff, coloroffsz, 1, stdout);
-                fwrite("\n", 1, 1, stdout);
+                zeb_write(line, (size_t)linelen - 1);
+                zeb_write(coloroff, coloroffsz);
+                zeb_write("\n", 1);
         }
 
         return 0;
