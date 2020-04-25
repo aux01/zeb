@@ -1,3 +1,13 @@
+/*
+ *
+ * zeb.c
+ *
+ * Copyright (c) 2020, Auxrelius I <aux01@aux.life>
+ * All rights reserved.
+ *
+ *
+ */
+
 #include <stdint.h>
 #include <stdio.h>
 #include <strings.h>
